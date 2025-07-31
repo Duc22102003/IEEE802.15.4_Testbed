@@ -1,0 +1,1170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>🎓 Academic BER Test Analysis Platform</title>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Times New Roman', serif;
+    background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+    min-height: 100vh;
+    color: #2c3e50;
+    padding: 20px;
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 1600px;
+    margin: 0 auto;
+    background: rgba(255, 255, 255, 0.98);
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 15px 50px rgba(0, 0, 0, 0.2);
+    border: 2px solid #34495e;
+}
+
+.header {
+    background: linear-gradient(135deg, #2c3e50, #34495e);
+    color: white;
+    padding: 40px;
+    text-align: center;
+    border-bottom: 3px solid #1abc9c;
+}
+
+.header h1 {
+    font-size: 2.8em;
+    font-weight: 700;
+    margin-bottom: 15px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+.header p {
+    font-size: 1.3em;
+    opacity: 0.9;
+    font-style: italic;
+}
+
+.content {
+    padding: 40px;
+    background: #f8f9fa;
+}
+
+/* Academic Paper Style Headers */
+.section-title {
+    font-size: 1.8em;
+    font-weight: 700;
+    color: #2c3e50;
+    margin-bottom: 25px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #1abc9c;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.subsection-title {
+    font-size: 1.4em;
+    font-weight: 600;
+    color: #34495e;
+    margin-bottom: 20px;
+    padding-left: 15px;
+    border-left: 4px solid #3498db;
+}
+
+/* Global Settings - Academic Style */
+.global-settings {
+    background: rgba(52, 152, 219, 0.08);
+    border-radius: 12px;
+    padding: 30px;
+    margin-bottom: 35px;
+    border: 2px solid rgba(52, 152, 219, 0.2);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.global-controls {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 25px;
+}
+
+/* Node Panels - Research Lab Style */
+.nodes-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 35px;
+    margin-bottom: 35px;
+}
+
+.node-panel {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 12px;
+    padding: 30px;
+    border: 3px solid #bdc3c7;
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+}
+
+.node-panel.tx-mode {
+    border-color: #e74c3c;
+    background: rgba(231, 76, 60, 0.05);
+    box-shadow: 0 8px 25px rgba(231, 76, 60, 0.15);
+}
+
+.node-panel.rx-mode {
+    border-color: #3498db;
+    background: rgba(52, 152, 219, 0.05);
+    box-shadow: 0 8px 25px rgba(52, 152, 219, 0.15);
+}
+
+.node-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid #ecf0f1;
+}
+
+.node-title {
+    font-size: 1.5em;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.node-title.tx {
+    color: #e74c3c;
+}
+
+.node-title.rx {
+    color: #3498db;
+}
+
+.mode-toggle {
+    background: linear-gradient(135deg, #3498db, #2980b9);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.mode-toggle.tx {
+    background: linear-gradient(135deg, #e74c3c, #c0392b);
+}
+
+.mode-toggle:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Form Controls - Academic Style */
+.form-group {
+    margin-bottom: 25px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: 700;
+    color: #2c3e50;
+    font-size: 1.1em;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 14px 18px;
+    border: 2px solid #bdc3c7;
+    border-radius: 8px;
+    font-size: 16px;
+    font-family: 'Courier New', monospace;
+    transition: all 0.3s ease;
+    background: rgba(255, 255, 255, 0.9);
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: #1abc9c;
+    box-shadow: 0 0 0 3px rgba(26, 188, 156, 0.1);
+    background: white;
+}
+
+.sync-controls {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.port-controls {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 15px;
+    align-items: end;
+    margin-bottom: 25px;
+}
+
+/* Control Buttons Row */
+.control-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+/* Academic Buttons */
+.btn {
+    background: linear-gradient(135deg, #1abc9c, #16a085);
+    color: white;
+    border: none;
+    padding: 14px 22px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(26, 188, 156, 0.3);
+}
+
+.btn:disabled {
+    background: #95a5a6;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+.btn.config {
+    background: linear-gradient(135deg, #3498db, #2980b9);
+}
+
+.btn.config:hover {
+    box-shadow: 0 6px 20px rgba(52, 152, 219, 0.3);
+}
+
+.btn.success {
+    background: linear-gradient(135deg, #27ae60, #229954);
+}
+
+.btn.success:hover {
+    box-shadow: 0 6px 20px rgba(39, 174, 96, 0.3);
+}
+
+.btn.danger {
+    background: linear-gradient(135deg, #e74c3c, #c0392b);
+}
+
+.btn.danger:hover {
+    box-shadow: 0 6px 20px rgba(231, 76, 60, 0.3);
+}
+
+.btn.reset {
+    background: linear-gradient(135deg, #f39c12, #e67e22);
+}
+
+.btn.reset:hover {
+    box-shadow: 0 6px 20px rgba(243, 156, 18, 0.3);
+}
+
+/* Status - Academic Style */
+.status {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 15px 20px;
+    background: rgba(236, 240, 241, 0.8);
+    border-radius: 8px;
+    border: 2px solid #bdc3c7;
+    font-weight: 600;
+}
+
+.status-indicator {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: #e74c3c;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 8px rgba(231, 76, 60, 0.5);
+}
+
+.status-indicator.connected {
+    background: #27ae60;
+    box-shadow: 0 0 12px rgba(39, 174, 96, 0.6);
+}
+
+/* Test Execution Section */
+.test-section {
+    background: rgba(26, 188, 156, 0.08);
+    border-radius: 12px;
+    padding: 35px;
+    text-align: center;
+    border: 2px solid rgba(26, 188, 156, 0.2);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+}
+
+.test-section h3 {
+    font-size: 1.8em;
+    font-weight: 700;
+    color: #2c3e50;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.test-section p {
+    font-size: 1.1em;
+    color: #34495e;
+    margin-bottom: 25px;
+    font-style: italic;
+}
+
+.start-btn {
+    background: linear-gradient(135deg, #27ae60, #229954);
+    color: white;
+    border: none;
+    padding: 20px 45px;
+    border-radius: 12px;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 18px;
+    transition: all 0.3s ease;
+    min-width: 220px;
+    margin: 0 15px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+}
+
+.start-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(39, 174, 96, 0.4);
+}
+
+.start-btn:disabled {
+    background: #95a5a6;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.start-btn.stop {
+    background: linear-gradient(135deg, #e74c3c, #c0392b);
+}
+
+.start-btn.stop:hover {
+    box-shadow: 0 8px 25px rgba(231, 76, 60, 0.4);
+}
+
+/* Test Results - Research Paper Style */
+.test-results {
+    margin-top: 35px;
+    padding: 30px;
+    background: rgba(39, 174, 96, 0.08);
+    border-radius: 12px;
+    border: 2px solid rgba(39, 174, 96, 0.2);
+    display: none;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+}
+
+.test-results h4 {
+    font-size: 1.6em;
+    font-weight: 700;
+    color: #2c3e50;
+    margin-bottom: 25px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 25px;
+    background: #ecf0f1;
+    border-radius: 12px;
+    overflow: hidden;
+    margin: 25px 0;
+    border: 2px solid #bdc3c7;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(135deg, #27ae60, #229954);
+    width: 0%;
+    transition: width 0.5s ease;
+    box-shadow: inset 0 2px 4px rgba(255,255,255,0.3);
+}
+
+/* BER Results Grid - Academic Table Style */
+.ber-results-grid {
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 10px;
+    padding: 25px;
+    border: 2px solid #bdc3c7;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin-top: 25px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.ber-result-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    background: rgba(236, 240, 241, 0.5);
+    border-radius: 8px;
+    border: 1px solid #bdc3c7;
+    transition: all 0.3s ease;
+}
+
+.ber-result-item:hover {
+    background: rgba(52, 152, 219, 0.1);
+    border-color: #3498db;
+}
+
+.ber-result-item label {
+    font-weight: 700;
+    color: #2c3e50;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.ber-result-item span {
+    font-weight: 700;
+    color: #e74c3c;
+    font-family: 'Courier New', monospace;
+    font-size: 1.1em;
+}
+
+.message {
+    padding: 18px;
+    border-radius: 8px;
+    margin: 15px 0;
+    font-weight: 600;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.message.success {
+    background: rgba(39, 174, 96, 0.1);
+    border: 2px solid #27ae60;
+    color: #229954;
+}
+
+.message.error {
+    background: rgba(231, 76, 60, 0.1);
+    border: 2px solid #e74c3c;
+    color: #c0392b;
+}
+
+.button-group {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+@media (max-width: 1200px) {
+    .nodes-container {
+        grid-template-columns: 1fr;
+        gap: 25px;
+    }
+    
+    .global-controls {
+        grid-template-columns: 1fr;
+    }
+    
+    .ber-results-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .button-group {
+        flex-direction: column;
+    }
+    
+    .sync-controls {
+        grid-template-columns: 1fr;
+    }
+    
+    .port-controls {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>BER Test Analysis Platform</h1>
+       
+    </div>
+    
+    <div class="content">
+        <!-- Global Test Parameters -->
+        <div class="global-settings">
+            <h3 class="section-title">Experimental Parameters Configuration</h3>
+            <div class="global-controls">
+                <div class="form-group">
+                    <label for="num_bits">Sample Size (Bytes):</label>
+                    <input type="number" id="num_bits" value="10000000" min="1000" max="100000000">
+                </div>
+                <div class="form-group">
+                    <label for="freq">Carrier Frequency (Hz):</label>
+                    <input type="number" id="freq" value="2450000000" min="2400000000" max="2500000000">
+                </div>
+                <div class="form-group">
+                    <label for="timeout">Test Duration Limit (s):</label>
+                    <input type="number" id="timeout" value="1000" min="10" max="10000">
+                </div>
+            </div>
+        </div>
+
+        <!-- Research Nodes Configuration -->
+        <div class="nodes-container">
+            <!-- Node 1 (TX by default) -->
+            <div class="node-panel tx-mode" id="node1">
+                <div class="node-header">
+                    <h3 class="node-title tx">Research Node 1 (TX)</h3>
+                    <button class="mode-toggle tx" id="node1_mode_toggle">TX Mode</button>
+                </div>
+                
+                <!-- Synchronization Protocol Configuration -->
+                <div class="form-group">
+                    <label class="subsection-title">Synchronization Protocol Setup:</label>
+                    <div class="sync-controls">
+                        <input type="number" id="node1_syncwords1" placeholder="Sync Word 1" min="0" max="4294967295">
+                        <input type="number" id="node1_syncwords2" placeholder="Sync Word 2" min="0" max="4294967295">
+                        <input type="number" id="node1_bitlength" placeholder="Bit Length" min="1" max="64">
+                    </div>
+                    <button class="btn config" id="node1_config_sync">Configure Synchronization</button>
+                </div>
+
+                <!-- Communication Interface Setup -->
+                <div class="form-group">
+                    <label class="subsection-title">Communication Interface:</label>
+                    <div class="port-controls">
+                        <select id="node1_port" class="port-select">
+                            <option value="">Select Serial Port</option>
+                        </select>
+                        <select id="node1_baudrate">
+                            <option value="115200">115200 bps</option>
+                            <option value="9600">9600 bps</option>
+                            <option value="57600">57600 bps</option>
+                        </select>
+                        <button class="btn" id="node1_port_toggle">Open Port</button>
+                    </div>
+                </div>
+
+                <!-- Node Control Operations -->
+                <div class="form-group">
+                    <label class="subsection-title">Node Operations:</label>
+                    <div class="control-buttons">
+                        <button class="btn reset" id="node1_reset">Reset Node</button>
+                    </div>
+                </div>
+
+                <!-- System Status Monitor -->
+                <div class="form-group">
+                    <label class="subsection-title">Connection Status:</label>
+                    <div class="status">
+                        <span class="status-indicator" id="node1_status_indicator"></span>
+                        <span id="node1_status_text">Disconnected</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Node 2 (RX by default) -->
+            <div class="node-panel rx-mode" id="node2">
+                <div class="node-header">
+                    <h3 class="node-title rx">Research Node 2 (RX)</h3>
+                    <button class="mode-toggle" id="node2_mode_toggle">RX Mode</button>
+                </div>
+                
+                <!-- Synchronization Protocol Configuration -->
+                <div class="form-group">
+                    <label class="subsection-title">Synchronization Protocol Setup:</label>
+                    <div class="sync-controls">
+                        <input type="number" id="node2_syncwords1" placeholder="Sync Word 1" min="0" max="4294967295">
+                        <input type="number" id="node2_syncwords2" placeholder="Sync Word 2" min="0" max="4294967295">
+                        <input type="number" id="node2_bitlength" placeholder="Bit Length" min="1" max="64">
+                    </div>
+                    <button class="btn config" id="node2_config_sync">Configure Synchronization</button>
+                </div>
+
+                <!-- Communication Interface Setup -->
+                <div class="form-group">
+                    <label class="subsection-title">Communication Interface:</label>
+                    <div class="port-controls">
+                        <select id="node2_port" class="port-select">
+                            <option value="">Select Serial Port</option>
+                        </select>
+                        <select id="node2_baudrate">
+                            <option value="115200">115200 bps</option>
+                            <option value="9600">9600 bps</option>
+                            <option value="57600">57600 bps</option>
+                        </select>
+                        <button class="btn" id="node2_port_toggle">Open Port</button>
+                    </div>
+                </div>
+
+                <!-- Node Control Operations -->
+                <div class="form-group">
+                    <label class="subsection-title">Node Operations:</label>
+                    <div class="control-buttons">
+                        <button class="btn reset" id="node2_reset">Reset Node</button>
+                    </div>
+                </div>
+
+                <!-- System Status Monitor -->
+                <div class="form-group">
+                    <label class="subsection-title">Connection Status:</label>
+                    <div class="status">
+                        <span class="status-indicator" id="node2_status_indicator"></span>
+                        <span id="node2_status_text">Disconnected</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Test Execution Control -->
+        <div class="test-section">
+            <h3>Experimental Execution Control</h3>
+            <p>Ensure both research nodes are properly configured and connected before initiating the BER analysis.</p>
+            <div class="button-group">
+                <button class="start-btn" id="start_bertest" disabled>Initiate BER Analysis</button>
+                <button class="btn danger" id="clear_results" style="padding: 20px 35px; font-size: 16px;">🗑️ Clear Results</button>
+            </div>
+            
+            <!-- Research Results & Analysis -->
+            <div class="test-results" id="test_results">
+                <h4>Experimental Progress & Statistical Analysis</h4>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress_fill"></div>
+                </div>
+                <p id="progress_text" style="font-size: 1.2em; font-weight: 600; color: #2c3e50;">0% Complete</p>
+                
+                <!-- Detailed BER Analysis Results -->
+                <div class="ber-results-grid">
+                    <div class="ber-result-item">
+                        <label>Signal Strength (RSSI):</label>
+                        <span id="ber_rssi">0 dBm</span>
+                    </div>
+                    <div class="ber-result-item">
+                        <label>❌ Error Count:</label>
+                        <span id="bit_errors">0</span>
+                    </div>
+                    <div class="ber-result-item">
+                        <label>Total Bits Analyzed:</label>
+                        <span id="bits_tested">0</span>
+                    </div>
+                    <div class="ber-result-item">
+                        <label>Bit Error Rate (%):</label>
+                        <span id="percent_bit_error">0.000000%</span>
+                    </div>
+                </div>
+                
+                <div id="detailed_results"></div>
+            </div>
+        </div>
+
+        <!-- System Messages -->
+        <div id="messages"></div>
+    </div>
+</div>
+
+<script>
+// Global variables
+let nodeStates = {
+    node1: { connected: false, mode: 'TX' },
+    node2: { connected: false, mode: 'RX' }
+};
+let testRunning = false;
+let progressInterval = null;
+
+// Initialize on page load
+$(document).ready(function() {
+    loadPorts();
+    loadDefaultSyncWords();
+    setupEventHandlers();
+    checkTestReadiness();
+});
+
+// Load available ports
+function loadPorts() {
+    $.get('/refresh_ports', function(ports) {
+        $('.port-select').each(function() {
+            const currentValue = $(this).val();
+            $(this).empty().append('<option value="">Select Serial Port</option>');
+            ports.forEach(port => {
+                const selected = port === currentValue ? 'selected' : '';
+                $(this).append(`<option value="${port}" ${selected}>${port}</option>`);
+            });
+        });
+    }).fail(function() {
+        showMessage('Error loading available ports', 'error');
+    });
+}
+
+// Load default sync words
+function loadDefaultSyncWords() {
+    $('#node1_syncwords1, #node2_syncwords1').val(0);
+    $('#node1_syncwords2, #node2_syncwords2').val(0);
+    $('#node1_bitlength, #node2_bitlength').val(32);
+}
+
+// Setup all event handlers
+function setupEventHandlers() {
+    // Mode toggle buttons
+    $('#node1_mode_toggle').on('click', function() {
+        toggleMode('node1');
+    });
+    
+    $('#node2_mode_toggle').on('click', function() {
+        toggleMode('node2');
+    });
+    
+    // Config sync words buttons
+    $('#node1_config_sync').on('click', function() {
+        configSyncWords('node1');
+    });
+    
+    $('#node2_config_sync').on('click', function() {
+        configSyncWords('node2');
+    });
+    
+    // Reset buttons
+    $('#node1_reset').on('click', function() {
+        resetNode('node1');
+    });
+    
+    $('#node2_reset').on('click', function() {
+        resetNode('node2');
+    });
+    
+    // Port toggle buttons
+    $('#node1_port_toggle').on('click', function() {
+        togglePort('node1');
+    });
+    
+    $('#node2_port_toggle').on('click', function() {
+        togglePort('node2');
+    });
+    
+    // Start test button
+    $('#start_bertest').on('click', function() {
+        if (!testRunning) {
+            startBerTest();
+        } else {
+            stopBerTest();
+        }
+    });
+    
+    // Clear results button
+    $('#clear_results').on('click', function() {
+        if (confirm('Are you sure you want to clear all experimental results?')) {
+            clearBerTestResults();
+        }
+    });
+}
+
+// Reset node function
+function resetNode(nodeId) {
+    if (!nodeStates[nodeId].connected) {
+        showMessage('Please establish connection before resetting the node', 'error');
+        return;
+    }
+    
+    $.ajax({
+        url: '/bertest_reset_node',
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify({
+            node_id: nodeId
+        }),
+        success: function(response) {
+            if (response.status === 'success') {
+                showMessage(`${nodeId} reset successfully`, 'success');
+            } else {
+                showMessage(response.message, 'error');
+            }
+        },
+        error: function() {
+            showMessage('Error occurred during node reset', 'error');
+        }
+    });
+}
+
+// Toggle TX/RX mode
+function toggleMode(nodeId) {
+    const currentMode = nodeStates[nodeId].mode;
+    const newMode = currentMode === 'TX' ? 'RX' : 'TX';
+    const otherNodeId = nodeId === 'node1' ? 'node2' : 'node1';
+    const otherMode = newMode === 'TX' ? 'RX' : 'TX';
+    
+    // Update states
+    nodeStates[nodeId].mode = newMode;
+    nodeStates[otherNodeId].mode = otherMode;
+    
+    // Update UI
+    updateNodeUI(nodeId, newMode);
+    updateNodeUI(otherNodeId, otherMode);
+    
+    checkTestReadiness();
+}
+
+// Update node UI based on mode
+function updateNodeUI(nodeId, mode) {
+    const $node = $(`#${nodeId}`);
+    const $title = $node.find('.node-title');
+    const $toggle = $node.find('.mode-toggle');
+    
+    // Update classes
+    $node.removeClass('tx-mode rx-mode').addClass(`${mode.toLowerCase()}-mode`);
+    $title.removeClass('tx rx').addClass(mode.toLowerCase());
+    $toggle.removeClass('tx').addClass(mode === 'TX' ? 'tx' : '');
+    
+    // Update text
+    const icon = mode === 'TX' ? '📤' : '📥';
+    const nodeNum = nodeId === 'node1' ? '1' : '2';
+    $title.text(`${icon} Research Node ${nodeNum} (${mode})`);
+    $toggle.text(`${mode} Mode`);
+}
+
+// Configure sync words
+function configSyncWords(nodeId) {
+    const syncWords1 = parseInt($(`#${nodeId}_syncwords1`).val()) || 0;
+    const syncWords2 = parseInt($(`#${nodeId}_syncwords2`).val()) || 0;
+    const bitLength = parseInt($(`#${nodeId}_bitlength`).val()) || 32;
+    
+    if (!nodeStates[nodeId].connected) {
+        showMessage('Please establish connection before configuring synchronization', 'error');
+        return;
+    }
+    
+    $.ajax({
+        url: '/bertest_config_sync',
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify({
+            node_id: nodeId,
+            sync_words1: syncWords1,
+            sync_words2: syncWords2,
+            bit_length: bitLength
+        }),
+        success: function(response) {
+            if (response.status === 'success') {
+                // Update values from Node after configuration
+                if (response.sync_words1 !== undefined) {
+                    $(`#${nodeId}_syncwords1`).val(response.sync_words1);
+                    $(`#${nodeId}_syncwords2`).val(response.sync_words2);
+                    $(`#${nodeId}_bitlength`).val(response.bit_length);
+                }
+                showMessage(`Synchronization protocol configured for ${nodeId}`, 'success');
+            } else {
+                showMessage(response.message, 'error');
+            }
+        },
+        error: function() {
+            showMessage('Error configuring synchronization protocol', 'error');
+        }
+    });
+}
+
+// Toggle port connection
+function togglePort(nodeId) {
+    const $btn = $(`#${nodeId}_port_toggle`);
+    const $indicator = $(`#${nodeId}_status_indicator`);
+    const $status = $(`#${nodeId}_status_text`);
+    const port = $(`#${nodeId}_port`).val();
+    const baudrate = $(`#${nodeId}_baudrate`).val();
+    
+    if (!port) {
+        showMessage('Please select a communication port', 'error');
+        return;
+    }
+    
+    if (!nodeStates[nodeId].connected) {
+        // Open port
+        $btn.prop('disabled', true).text('Establishing...');
+        
+        $.ajax({
+            url: '/bertest_open_port',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({
+                node_id: nodeId,
+                port: port,
+                baudrate: parseInt(baudrate)
+            }),
+            success: function(response) {
+                if (response.status === 'success') {
+                    nodeStates[nodeId].connected = true;
+                    $btn.text('Disconnect').prop('disabled', false);
+                    $indicator.addClass('connected');
+                    $status.text('Connected');
+                    
+                    // Load sync words from Node
+                    if (response.sync_words1 !== undefined) {
+                        $(`#${nodeId}_syncwords1`).val(response.sync_words1);
+                        $(`#${nodeId}_syncwords2`).val(response.sync_words2);
+                        $(`#${nodeId}_bitlength`).val(response.bit_length);
+                    }
+                    
+                    showMessage(`${nodeId} connected to ${port}`, 'success');
+                    checkTestReadiness();
+                } else {
+                    showMessage(response.message, 'error');
+                    $btn.text('Open Port').prop('disabled', false);
+                }
+            },
+            error: function() {
+                showMessage('Error establishing connection', 'error');
+                $btn.text('Open Port').prop('disabled', false);
+            }
+        });
+    } else {
+        // Close port
+        $.ajax({
+            url: '/bertest_close_port',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({
+                node_id: nodeId
+            }),
+            success: function(response) {
+                nodeStates[nodeId].connected = false;
+                $btn.text('Open Port');
+                $indicator.removeClass('connected');
+                $status.text('Disconnected');
+                showMessage(`${nodeId} disconnected`, 'success');
+                checkTestReadiness();
+            }
+        });
+    }
+}
+
+// Check if ready to start test
+function checkTestReadiness() {
+    const bothConnected = nodeStates.node1.connected && nodeStates.node2.connected;
+    const hasTxRx = (nodeStates.node1.mode === 'TX' && nodeStates.node2.mode === 'RX') ||
+                    (nodeStates.node1.mode === 'RX' && nodeStates.node2.mode === 'TX');
+    
+    $('#start_bertest').prop('disabled', !(bothConnected && hasTxRx && !testRunning));
+}
+
+// Start BER test
+function startBerTest() {
+    const numBits = parseInt($('#num_bits').val()) || 1000000;
+    const freq = parseInt($('#freq').val()) || 2450000000;
+    const timeout = parseInt($('#timeout').val()) || 1000;
+    
+    // Determine TX and RX nodes
+    let txNode, rxNode;
+    if (nodeStates.node1.mode === 'TX') {
+        txNode = 'node1';
+        rxNode = 'node2';
+    } else {
+        txNode = 'node2';
+        rxNode = 'node1';
+    }
+    
+    testRunning = true;
+    $('#start_bertest').text('🛑 Stop Analysis').removeClass('start-btn').addClass('start-btn stop');
+    $('#test_results').fadeIn(300);
+    $('#progress_fill').width('0%');
+    $('#progress_text').text('0% Complete');
+    
+    // Reset BER results
+    $('#ber_rssi').text('0 dBm');
+    $('#bit_errors').text('0');
+    $('#bits_tested').text('0');
+    $('#percent_bit_error').text('0.000000%');
+    
+    $.ajax({
+        url: '/bertest_start',
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify({
+            tx_node: txNode,
+            rx_node: rxNode,
+            num_bits: numBits,
+            freq: freq,
+            timeout: timeout
+        }),
+        success: function(response) {
+            if (response.status === 'success') {
+                showMessage('BER Analysis initiated successfully', 'success');
+                startProgressMonitoring();
+            } else {
+                showMessage(response.message, 'error');
+                stopBerTest();
+            }
+        },
+        error: function() {
+            showMessage('Error initiating BER analysis', 'error');
+            stopBerTest();
+        }
+    });
+}
+
+// Start progress monitoring with accurate BER calculation
+function startProgressMonitoring() {
+    progressInterval = setInterval(function() {
+        $.ajax({
+            url: '/bertest_status',
+            type: 'GET',
+            success: function(response) {
+                console.log('BER Status Response:', response);
+                
+                if (response.status === 'success') {
+                    // Update progress from Node.PercentDone
+                    const progress = parseFloat(response.progress) || 0;
+                    $('#progress_fill').width(`${progress}%`);
+                    $('#progress_text').text(`${progress.toFixed(2)}% Complete`);
+                    
+                    // Update BER test results from Node properties
+                    if (response.ber_rssi !== undefined) {
+                        $('#ber_rssi').text(`${response.ber_rssi} dBm`);
+                    }
+                    if (response.bit_errors !== undefined) {
+                        $('#bit_errors').text(response.bit_errors.toLocaleString());
+                    }
+                    if (response.bits_tested !== undefined) {
+                        $('#bits_tested').text(response.bits_tested.toLocaleString());
+                    }
+                    
+                    // ACCURATE BER CALCULATION AT WEB - 6 decimal places
+                    if (response.bit_errors !== undefined && response.bits_tested !== undefined && response.bits_tested > 0) {
+                        const preciseBER = (response.bit_errors / response.bits_tested) * 100;
+                        $('#percent_bit_error').text(`${preciseBER.toFixed(6)}%`);
+                    } else {
+                        $('#percent_bit_error').text('0.000000%');
+                    }
+                    
+                    // ONLY STOP WHEN TEST IS NOT RUNNING - DON'T RESET VALUES
+                    if (!response.running) {
+                        testRunning = false;
+                        $('#start_bertest').text('🔬 Initiate BER Analysis').removeClass('stop').addClass('start-btn');
+                        
+                        if (progressInterval) {
+                            clearInterval(progressInterval);
+                            progressInterval = null;
+                        }
+                        
+                        // Show completion message BUT DON'T RESET RESULTS
+                        if (response.completed || progress >= 100) {
+                            showMessage('BER Analysis completed successfully! Results preserved.', 'success');
+                            $('#progress_fill').width('100%');
+                            $('#progress_text').text('100% Complete');
+                        }
+                        
+                        checkTestReadiness();
+                    }
+                } else {
+                    console.error('BER Status Error:', response.message);
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('AJAX Error:', error);
+                stopBerTest();
+                showMessage('Error monitoring experimental progress', 'error');
+            }
+        });
+    }, 1000);
+}
+
+// Stop BER test
+function stopBerTest() {
+    testRunning = false;
+    $('#start_bertest').text('🔬 Initiate BER Analysis').removeClass('stop').addClass('start-btn');
+    
+    if (progressInterval) {
+        clearInterval(progressInterval);
+        progressInterval = null;
+    }
+    
+    // Call API to stop test
+    $.ajax({
+        url: '/bertest_stop',
+        type: 'POST',
+        success: function(response) {
+            console.log('BER analysis stopped successfully');
+        },
+        error: function() {
+            console.error('Error stopping BER analysis');
+        }
+    });
+    
+    checkTestReadiness();
+}
+
+// Clear BER test results
+function clearBerTestResults() {
+    $.ajax({
+        url: '/bertest_clear_results',
+        type: 'POST',
+        success: function(response) {
+            if (response.status === 'success') {
+                // Reset UI
+                $('#progress_fill').width('0%');
+                $('#progress_text').text('0% Complete');
+                $('#ber_rssi').text('0 dBm');
+                $('#bit_errors').text('0');
+                $('#bits_tested').text('0');
+                $('#percent_bit_error').text('0.000000%');
+                $('#test_results').hide();
+                
+                showMessage('Experimental results cleared', 'success');
+            } else {
+                showMessage(response.message, 'error');
+            }
+        },
+        error: function() {
+            showMessage('Error clearing experimental results', 'error');
+        }
+    });
+}
+
+// Show message
+function showMessage(message, type = 'success') {
+    const messageHtml = `<div class="message ${type}">${message}</div>`;
+    $('#messages').prepend(messageHtml);
+    
+    // Auto remove after 5 seconds
+    setTimeout(() => {
+        $('#messages .message').first().fadeOut(300, function() {
+            $(this).remove();
+        });
+    }, 5000);
+}
+</script>
+</body>
+</html>

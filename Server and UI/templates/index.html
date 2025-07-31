@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zigbee Multi-Node Controller - Academic Interface</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <!-- Time Display -->
+    <div class="time-display" id="realTimeClock">Loading...</div>
+    
+    <!-- Header Section -->
+    <div class="header">
+        <h1>Zigbee Multi-Node Controller</h1>
+        <div class="global-controls">
+            <button class="btn-global" id="reloadPorts">Reload Ports</button>
+            <button class="btn-global" id="addEndDevice">Add End Device</button>
+            <button class="btn-global coordinator" id="addCoordinator">Add Coordinator</button>
+            <button class="btn-global" id="openBerTest">BER Test</button>
+            <button class="btn-global clear" id="clearState">Clear All Data</button>
+            <button class="btn-global clear" id="cleanupServer">Cleanup Server</button>
+            <span id="nodeCount">0 Nodes Active</span>
+        </div>
+    </div>
+
+    <!-- Main Container for Nodes -->
+    <div class="nodes-grid" id="nodesContainer">
+        <!-- Nodes will be dynamically added here -->
+    </div>
+
+    <!-- Package Detail Modal -->
+    <div class="modal-overlay" id="packageDetailModal" style="display: none;">
+        <div class="modal-container">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h2>Package Detail Analysis</h2>
+                <button class="modal-close" id="closePackageModal">&times;</button>
+            </div>
+            
+            <!-- Modal Content -->
+            <div class="modal-content">
+                <!-- Package Summary Section -->
+                <div class="package-summary">
+                    <h3>Package Summary</h3>
+                    <div class="summary-grid">
+                        <div class="summary-item">
+                            <label>Event:</label>
+                            <span id="modalEvent">-</span>
+                        </div>
+                        <div class="summary-item">
+                            <label>ID64:</label>
+                            <span id="modalID64">-</span>
+                        </div>
+                        <div class="summary-item">
+                            <label>Time (μs):</label>
+                            <span id="modalTime">-</span>
+                        </div>
+                        <div class="summary-item">
+                            <label>Real Time:</label>
+                            <span id="modalRealTime">-</span>
+                        </div>
+                        <div class="summary-item">
+                            <label>RSSI:</label>
+                            <span id="modalRSSI">-</span>
+                        </div>
+                        <div class="summary-item">
+                            <label>Channel:</label>
+                            <span id="modalChannel">-</span>
+                        </div>
+                        <div class="summary-item">
+                            <label>Length:</label>
+                            <span id="modalLength">-</span>
+                        </div>
+                        <div class="summary-item">
+                            <label>Packet Type:</label>
+                            <span id="modalPackageType">-</span>
+                        </div>
+                        <div class="summary-item">
+                            <label>LQI:</label>
+                            <span id="modalLQI">-</span>
+                        </div>
+                        <div class="summary-item">
+                            <label>CRC Pass:</label>
+                            <span id="modalCRCPass">-</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Protocol Analysis Section -->
+                <div class="protocol-analysis">
+                    <!-- IEEE 802.15.4 Layer -->
+                    <div class="protocol-section" id="ieee802154Section">
+                        <div class="protocol-header" data-toggle="ieee802154">
+                            <span class="protocol-icon">▼</span>
+                            <span class="protocol-title">IEEE 802.15.4</span>
+                            <span class="protocol-length" id="ieee802154Length">[Variable bytes]</span>
+                        </div>
+                        <div class="protocol-content" id="ieee802154Content">
+                            <!-- PHY Header -->
+                            <div class="field-group">
+                                <div class="field-header">PHY Header</div>
+                                <div class="field-details">
+                                    <div class="field-item">
+                                        <span class="field-label">Packet Length:</span>
+                                        <span class="field-value" id="packetLength">-</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Frame Control Field -->
+                            <div class="field-group">
+                                <div class="field-header">Frame Control Field</div>
+                                <div class="field-details">
+                                    <div class="field-item">
+                                        <span class="field-label">Frame Control:</span>
+                                        <span class="field-value" id="frameControlValue">-</span>
+                                    </div>
+                                    <div class="bit-analysis" id="frameControlBits">
+                                        <!-- Bit analysis will be populated here -->
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Addressing Fields -->
+                            <div class="field-group">
+                                <div class="field-header">Addressing Fields</div>
+                                <div class="field-details">
+                                    <div class="field-item">
+                                        <span class="field-label">Sequence:</span>
+                                        <span class="field-value" id="sequenceNumber">-</span>
+                                    </div>
+                                    <div class="field-item">
+                                        <span class="field-label">Destination PAN ID:</span>
+                                        <span class="field-value" id="destPanId">-</span>
+                                    </div>
+                                    <div class="field-item">
+                                        <span class="field-label">Destination Address:</span>
+                                        <span class="field-value" id="destAddr">-</span>
+                                    </div>
+                                    <div class="field-item">
+                                        <span class="field-label">Source Address:</span>
+                                        <span class="field-value" id="sourceAddr">-</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- ZigBee Network Layer -->
+                    <div class="protocol-section" id="zigbeeNetworkSection" style="display: none;">
+                        <div class="protocol-header" data-toggle="zigbeeNetwork">
+                            <span class="protocol-icon">▼</span>
+                            <span class="protocol-title">ZigBee Network Layer</span>
+                            <span class="protocol-length" id="zigbeeNetworkLength">[Variable bytes]</span>
+                        </div>
+                        <div class="protocol-content" id="zigbeeNetworkContent">
+                            <!-- Network Frame Control -->
+                            <div class="field-group">
+                                <div class="field-header">Network Frame Control</div>
+                                <div class="field-details">
+                                    <div class="field-item">
+                                        <span class="field-label">Frame Control:</span>
+                                        <span class="field-value" id="nwkFrameControl">-</span>
+                                    </div>
+                                    <div class="bit-analysis" id="nwkFrameControlBits">
+                                        <!-- Network bit analysis will be populated here -->
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Network Addressing -->
+                            <div class="field-group">
+                                <div class="field-header">Network Addressing</div>
+                                <div class="field-details">
+                                    <div class="field-item">
+                                        <span class="field-label">Destination Address:</span>
+                                        <span class="field-value" id="nwkDestAddr">-</span>
+                                    </div>
+                                    <div class="field-item">
+                                        <span class="field-label">Source Address:</span>
+                                        <span class="field-value" id="nwkSourceAddr">-</span>
+                                    </div>
+                                    <div class="field-item">
+                                        <span class="field-label">Radius:</span>
+                                        <span class="field-value" id="nwkRadius">-</span>
+                                    </div>
+                                    <div class="field-item">
+                                        <span class="field-label">Sequence:</span>
+                                        <span class="field-value" id="nwkSequence">-</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- ZigBee Security Layer -->
+                    <div class="protocol-section" id="zigbeeSecuritySection" style="display: none;">
+                        <div class="protocol-header" data-toggle="zigbeeSecurity">
+                            <span class="protocol-icon">▼</span>
+                            <span class="protocol-title">ZigBee Network Security</span>
+                            <span class="protocol-length" id="zigbeeSecurityLength">[Variable bytes]</span>
+                        </div>
+                        <div class="protocol-content" id="zigbeeSecurityContent">
+                            <!-- Security Control -->
+                            <div class="field-group">
+                                <div class="field-header">Security Control</div>
+                                <div class="field-details">
+                                    <div class="field-item">
+                                        <span class="field-label">Security Level:</span>
+                                        <span class="field-value" id="securityLevel">-</span>
+                                    </div>
+                                    <div class="field-item">
+                                        <span class="field-label">Key Identifier:</span>
+                                        <span class="field-value" id="keyIdentifier">-</span>
+                                    </div>
+                                    <div class="field-item">
+                                        <span class="field-label">Extended Nonce:</span>
+                                        <span class="field-value" id="extendedNonce">-</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Security Fields -->
+                            <div class="field-group">
+                                <div class="field-header">Security Fields</div>
+                                <div class="field-details">
+                                    <div class="field-item">
+                                        <span class="field-label">Frame Counter:</span>
+                                        <span class="field-value" id="frameCounter">-</span>
+                                    </div>
+                                    <div class="field-item">
+                                        <span class="field-label">Source Address:</span>
+                                        <span class="field-value" id="secSourceAddr">-</span>
+                                    </div>
+                                    <div class="field-item">
+                                        <span class="field-label">Key Sequence:</span>
+                                        <span class="field-value" id="keySequence">-</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Application Payload -->
+                    <div class="protocol-section" id="applicationPayloadSection" style="display: none;">
+                        <div class="protocol-header" data-toggle="applicationPayload">
+                            <span class="protocol-icon">▼</span>
+                            <span class="protocol-title">Application Payload</span>
+                            <span class="protocol-length" id="payloadLength">[0 bytes]</span>
+                        </div>
+                        <div class="protocol-content" id="applicationPayloadContent">
+                            <div class="field-group">
+                                <div class="field-header">Payload Data</div>
+                                <div class="field-details">
+                                    <div class="hex-dump" id="payloadHexDump">
+                                        <!-- Hex dump will be populated here -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Raw Data Section -->
+                    <div class="protocol-section">
+                        <div class="protocol-header" data-toggle="rawData">
+                            <span class="protocol-icon">▼</span>
+                            <span class="protocol-title">Raw Data</span>
+                            <span class="protocol-length" id="rawDataLength">[0 bytes]</span>
+                        </div>
+                        <div class="protocol-content" id="rawDataContent">
+                            <div class="field-group">
+                                <div class="field-header">Complete Packet Hex Dump</div>
+                                <div class="field-details">
+                                    <div class="hex-dump" id="rawDataHexDump">
+                                        <!-- Raw hex dump will be populated here -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay" style="display: none;">
+        <div class="loading-content">
+            <div class="loading-spinner"></div>
+            <div class="loading-text">Processing...</div>
+        </div>
+    </div>
+
+    <!-- JavaScript Files -->
+    <script src="/static/js/app.js"></script>
+</body>
+</html>
