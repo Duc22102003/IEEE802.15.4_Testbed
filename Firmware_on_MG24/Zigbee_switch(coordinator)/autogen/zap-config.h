@@ -139,13 +139,13 @@
 
 // Array of sl_zigbee_af_command_metadata_t structs.
 #define ZCL_ZAP_COMMAND_MASK(mask) COMMAND_MASK_ ## mask
-#define SL_ZIGBEE_ZCL_GENERATED_COMMAND_COUNT  (66)
+#define SL_ZIGBEE_ZCL_GENERATED_COMMAND_COUNT  (70)
 #define ZCL_GENERATED_COMMANDS { \
   { 0x0000, 0x00, COMMAND_MASK_INCOMING_SERVER }, /* 0, Cluster: Basic, Command: ResetToFactoryDefaults*/ \
 	  { 0x0003, 0x00, COMMAND_MASK_INCOMING_SERVER | COMMAND_MASK_OUTGOING_CLIENT }, /* 1, Cluster: Identify, Command: Identify*/ \
 	  { 0x0003, 0x00, COMMAND_MASK_INCOMING_CLIENT | COMMAND_MASK_OUTGOING_SERVER }, /* 2, Cluster: Identify, Command: IdentifyQueryResponse*/ \
 	  { 0x0003, 0x01, COMMAND_MASK_INCOMING_SERVER | COMMAND_MASK_OUTGOING_CLIENT }, /* 3, Cluster: Identify, Command: IdentifyQuery*/ \
-	  { 0x0003, 0x40, COMMAND_MASK_OUTGOING_CLIENT }, /* 4, Cluster: Identify, Command: TriggerEffect*/ \
+	  { 0x0003, 0x40, COMMAND_MASK_INCOMING_SERVER | COMMAND_MASK_OUTGOING_CLIENT }, /* 4, Cluster: Identify, Command: TriggerEffect*/ \
 	  { 0x0004, 0x00, COMMAND_MASK_OUTGOING_CLIENT }, /* 5, Cluster: Groups, Command: AddGroup*/ \
 	  { 0x0004, 0x00, COMMAND_MASK_INCOMING_CLIENT }, /* 6, Cluster: Groups, Command: AddGroupResponse*/ \
 	  { 0x0004, 0x01, COMMAND_MASK_OUTGOING_CLIENT }, /* 7, Cluster: Groups, Command: ViewGroup*/ \
@@ -183,36 +183,40 @@
 	  { 0x0008, 0x05, COMMAND_MASK_OUTGOING_CLIENT }, /* 39, Cluster: Level Control, Command: MoveWithOnOff*/ \
 	  { 0x0008, 0x06, COMMAND_MASK_OUTGOING_CLIENT }, /* 40, Cluster: Level Control, Command: StepWithOnOff*/ \
 	  { 0x0008, 0x07, COMMAND_MASK_OUTGOING_CLIENT }, /* 41, Cluster: Level Control, Command: StopWithOnOff*/ \
-	  { 0x0019, 0x01, COMMAND_MASK_OUTGOING_CLIENT }, /* 42, Cluster: Over the Air Bootloading, Command: QueryNextImageRequest*/ \
-	  { 0x0019, 0x03, COMMAND_MASK_OUTGOING_CLIENT }, /* 43, Cluster: Over the Air Bootloading, Command: ImageBlockRequest*/ \
-	  { 0x0019, 0x06, COMMAND_MASK_OUTGOING_CLIENT }, /* 44, Cluster: Over the Air Bootloading, Command: UpgradeEndRequest*/ \
-	  { 0x0300, 0x07, COMMAND_MASK_OUTGOING_CLIENT }, /* 45, Cluster: Color Control, Command: MoveToColor*/ \
-	  { 0x0300, 0x08, COMMAND_MASK_OUTGOING_CLIENT }, /* 46, Cluster: Color Control, Command: MoveColor*/ \
-	  { 0x0300, 0x09, COMMAND_MASK_OUTGOING_CLIENT }, /* 47, Cluster: Color Control, Command: StepColor*/ \
-	  { 0x1000, 0x00, COMMAND_MASK_INCOMING_SERVER | COMMAND_MASK_OUTGOING_CLIENT }, /* 48, Cluster: ZLL Commissioning, Command: ScanRequest*/ \
-	  { 0x1000, 0x01, COMMAND_MASK_INCOMING_CLIENT | COMMAND_MASK_OUTGOING_SERVER }, /* 49, Cluster: ZLL Commissioning, Command: ScanResponse*/ \
-	  { 0x1000, 0x02, COMMAND_MASK_INCOMING_SERVER | COMMAND_MASK_OUTGOING_CLIENT }, /* 50, Cluster: ZLL Commissioning, Command: DeviceInformationRequest*/ \
-	  { 0x1000, 0x03, COMMAND_MASK_INCOMING_CLIENT | COMMAND_MASK_OUTGOING_SERVER }, /* 51, Cluster: ZLL Commissioning, Command: DeviceInformationResponse*/ \
-	  { 0x1000, 0x06, COMMAND_MASK_INCOMING_SERVER | COMMAND_MASK_OUTGOING_CLIENT }, /* 52, Cluster: ZLL Commissioning, Command: IdentifyRequest*/ \
-	  { 0x1000, 0x07, COMMAND_MASK_INCOMING_SERVER | COMMAND_MASK_OUTGOING_CLIENT }, /* 53, Cluster: ZLL Commissioning, Command: ResetToFactoryNewRequest*/ \
-	  { 0x1000, 0x10, COMMAND_MASK_INCOMING_SERVER | COMMAND_MASK_OUTGOING_CLIENT }, /* 54, Cluster: ZLL Commissioning, Command: NetworkStartRequest*/ \
-	  { 0x1000, 0x11, COMMAND_MASK_INCOMING_CLIENT | COMMAND_MASK_OUTGOING_SERVER }, /* 55, Cluster: ZLL Commissioning, Command: NetworkStartResponse*/ \
-	  { 0x1000, 0x12, COMMAND_MASK_INCOMING_SERVER | COMMAND_MASK_OUTGOING_CLIENT }, /* 56, Cluster: ZLL Commissioning, Command: NetworkJoinRouterRequest*/ \
-	  { 0x1000, 0x13, COMMAND_MASK_INCOMING_CLIENT | COMMAND_MASK_OUTGOING_SERVER }, /* 57, Cluster: ZLL Commissioning, Command: NetworkJoinRouterResponse*/ \
-	  { 0x1000, 0x14, COMMAND_MASK_INCOMING_SERVER | COMMAND_MASK_OUTGOING_CLIENT }, /* 58, Cluster: ZLL Commissioning, Command: NetworkJoinEndDeviceRequest*/ \
-	  { 0x1000, 0x15, COMMAND_MASK_INCOMING_CLIENT | COMMAND_MASK_OUTGOING_SERVER }, /* 59, Cluster: ZLL Commissioning, Command: NetworkJoinEndDeviceResponse*/ \
-	  { 0x1000, 0x16, COMMAND_MASK_INCOMING_SERVER | COMMAND_MASK_OUTGOING_CLIENT }, /* 60, Cluster: ZLL Commissioning, Command: NetworkUpdateRequest*/ \
-	  { 0x1000, 0x40, COMMAND_MASK_INCOMING_CLIENT | COMMAND_MASK_OUTGOING_SERVER }, /* 61, Cluster: ZLL Commissioning, Command: EndpointInformation*/ \
-	  { 0x1000, 0x41, COMMAND_MASK_INCOMING_SERVER | COMMAND_MASK_OUTGOING_CLIENT }, /* 62, Cluster: ZLL Commissioning, Command: GetGroupIdentifiersRequest*/ \
-	  { 0x1000, 0x41, COMMAND_MASK_INCOMING_CLIENT | COMMAND_MASK_OUTGOING_SERVER }, /* 63, Cluster: ZLL Commissioning, Command: GetGroupIdentifiersResponse*/ \
-	  { 0x1000, 0x42, COMMAND_MASK_INCOMING_SERVER | COMMAND_MASK_OUTGOING_CLIENT }, /* 64, Cluster: ZLL Commissioning, Command: GetEndpointListRequest*/ \
-	  { 0x1000, 0x42, COMMAND_MASK_INCOMING_CLIENT | COMMAND_MASK_OUTGOING_SERVER }, /* 65, Cluster: ZLL Commissioning, Command: GetEndpointListResponse*/ \
+	  { 0x0019, 0x00, COMMAND_MASK_INCOMING_CLIENT }, /* 42, Cluster: Over the Air Bootloading, Command: ImageNotify*/ \
+	  { 0x0019, 0x01, COMMAND_MASK_OUTGOING_CLIENT }, /* 43, Cluster: Over the Air Bootloading, Command: QueryNextImageRequest*/ \
+	  { 0x0019, 0x02, COMMAND_MASK_INCOMING_CLIENT }, /* 44, Cluster: Over the Air Bootloading, Command: QueryNextImageResponse*/ \
+	  { 0x0019, 0x03, COMMAND_MASK_OUTGOING_CLIENT }, /* 45, Cluster: Over the Air Bootloading, Command: ImageBlockRequest*/ \
+	  { 0x0019, 0x05, COMMAND_MASK_INCOMING_CLIENT }, /* 46, Cluster: Over the Air Bootloading, Command: ImageBlockResponse*/ \
+	  { 0x0019, 0x06, COMMAND_MASK_OUTGOING_CLIENT }, /* 47, Cluster: Over the Air Bootloading, Command: UpgradeEndRequest*/ \
+	  { 0x0019, 0x07, COMMAND_MASK_INCOMING_CLIENT }, /* 48, Cluster: Over the Air Bootloading, Command: UpgradeEndResponse*/ \
+	  { 0x0300, 0x07, COMMAND_MASK_OUTGOING_CLIENT }, /* 49, Cluster: Color Control, Command: MoveToColor*/ \
+	  { 0x0300, 0x08, COMMAND_MASK_OUTGOING_CLIENT }, /* 50, Cluster: Color Control, Command: MoveColor*/ \
+	  { 0x0300, 0x09, COMMAND_MASK_OUTGOING_CLIENT }, /* 51, Cluster: Color Control, Command: StepColor*/ \
+	  { 0x1000, 0x00, COMMAND_MASK_INCOMING_SERVER | COMMAND_MASK_OUTGOING_CLIENT }, /* 52, Cluster: ZLL Commissioning, Command: ScanRequest*/ \
+	  { 0x1000, 0x01, COMMAND_MASK_INCOMING_CLIENT | COMMAND_MASK_OUTGOING_SERVER }, /* 53, Cluster: ZLL Commissioning, Command: ScanResponse*/ \
+	  { 0x1000, 0x02, COMMAND_MASK_INCOMING_SERVER | COMMAND_MASK_OUTGOING_CLIENT }, /* 54, Cluster: ZLL Commissioning, Command: DeviceInformationRequest*/ \
+	  { 0x1000, 0x03, COMMAND_MASK_INCOMING_CLIENT | COMMAND_MASK_OUTGOING_SERVER }, /* 55, Cluster: ZLL Commissioning, Command: DeviceInformationResponse*/ \
+	  { 0x1000, 0x06, COMMAND_MASK_INCOMING_SERVER | COMMAND_MASK_OUTGOING_CLIENT }, /* 56, Cluster: ZLL Commissioning, Command: IdentifyRequest*/ \
+	  { 0x1000, 0x07, COMMAND_MASK_INCOMING_SERVER | COMMAND_MASK_OUTGOING_CLIENT }, /* 57, Cluster: ZLL Commissioning, Command: ResetToFactoryNewRequest*/ \
+	  { 0x1000, 0x10, COMMAND_MASK_INCOMING_SERVER | COMMAND_MASK_OUTGOING_CLIENT }, /* 58, Cluster: ZLL Commissioning, Command: NetworkStartRequest*/ \
+	  { 0x1000, 0x11, COMMAND_MASK_INCOMING_CLIENT | COMMAND_MASK_OUTGOING_SERVER }, /* 59, Cluster: ZLL Commissioning, Command: NetworkStartResponse*/ \
+	  { 0x1000, 0x12, COMMAND_MASK_INCOMING_SERVER | COMMAND_MASK_OUTGOING_CLIENT }, /* 60, Cluster: ZLL Commissioning, Command: NetworkJoinRouterRequest*/ \
+	  { 0x1000, 0x13, COMMAND_MASK_INCOMING_CLIENT | COMMAND_MASK_OUTGOING_SERVER }, /* 61, Cluster: ZLL Commissioning, Command: NetworkJoinRouterResponse*/ \
+	  { 0x1000, 0x14, COMMAND_MASK_INCOMING_SERVER | COMMAND_MASK_OUTGOING_CLIENT }, /* 62, Cluster: ZLL Commissioning, Command: NetworkJoinEndDeviceRequest*/ \
+	  { 0x1000, 0x15, COMMAND_MASK_INCOMING_CLIENT | COMMAND_MASK_OUTGOING_SERVER }, /* 63, Cluster: ZLL Commissioning, Command: NetworkJoinEndDeviceResponse*/ \
+	  { 0x1000, 0x16, COMMAND_MASK_INCOMING_SERVER | COMMAND_MASK_OUTGOING_CLIENT }, /* 64, Cluster: ZLL Commissioning, Command: NetworkUpdateRequest*/ \
+	  { 0x1000, 0x40, COMMAND_MASK_INCOMING_CLIENT | COMMAND_MASK_OUTGOING_SERVER }, /* 65, Cluster: ZLL Commissioning, Command: EndpointInformation*/ \
+	  { 0x1000, 0x41, COMMAND_MASK_INCOMING_SERVER | COMMAND_MASK_OUTGOING_CLIENT }, /* 66, Cluster: ZLL Commissioning, Command: GetGroupIdentifiersRequest*/ \
+	  { 0x1000, 0x41, COMMAND_MASK_INCOMING_CLIENT | COMMAND_MASK_OUTGOING_SERVER }, /* 67, Cluster: ZLL Commissioning, Command: GetGroupIdentifiersResponse*/ \
+	  { 0x1000, 0x42, COMMAND_MASK_INCOMING_SERVER | COMMAND_MASK_OUTGOING_CLIENT }, /* 68, Cluster: ZLL Commissioning, Command: GetEndpointListRequest*/ \
+	  { 0x1000, 0x42, COMMAND_MASK_INCOMING_CLIENT | COMMAND_MASK_OUTGOING_SERVER }, /* 69, Cluster: ZLL Commissioning, Command: GetEndpointListResponse*/ \
 	 } 
 // Array of sl_zigbee_af_manufacturer_code_entry_t structures for commands.
 #define ZCL_GENERATED_COMMAND_MANUFACTURER_CODE_COUNT (0)
 #define ZCL_GENERATED_COMMAND_MANUFACTURER_CODES { \
   { 0x00, 0x00 }  \
-																																																																		 } 
+																																																																						 } 
 // This is an array of sl_zigbee_af_manufacturer_code_entry_t structures for clusters.
 #define ZCL_GENERATED_CLUSTER_MANUFACTURER_CODE_COUNT (0)
 #define ZCL_GENERATED_CLUSTER_MANUFACTURER_CODES { \

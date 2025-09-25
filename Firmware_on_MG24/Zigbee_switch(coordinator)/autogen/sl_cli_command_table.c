@@ -145,10 +145,10 @@ void getSetMfgToken(sl_cli_command_arg_t *arguments);
 void sl_zigbee_af_counters_print_command(sl_cli_command_arg_t *arguments);
 void sl_zigbee_af_counters_print_counters_type_command(sl_cli_command_arg_t *arguments);
 void sl_zigbee_af_counters_simple_print_command(sl_cli_command_arg_t *arguments);
-void sl_zigbee_af_counters_clear(sl_cli_command_arg_t *arguments);
+void sl_zigbee_af_counters_clear_command(sl_cli_command_arg_t *arguments);
 void sl_zigbee_af_counters_print_thresholds_command(sl_cli_command_arg_t *arguments);
 void sl_zigbee_af_counters_set_threshold_command(sl_cli_command_arg_t *arguments);
-void sl_zigbee_af_counters_reset_thresholds(sl_cli_command_arg_t *arguments);
+void sl_zigbee_af_counters_reset_thresholds_command(sl_cli_command_arg_t *arguments);
 void sl_zigbee_af_counters_send_request_command(sl_cli_command_arg_t *arguments);
 void sli_zigbee_debug_print_enable_stack_type_command(sl_cli_command_arg_t *arguments);
 void sli_zigbee_debug_print_enable_core_type_command(sl_cli_command_arg_t *arguments);
@@ -177,7 +177,8 @@ void sl_zigbee_af_network_steering_channel_add_or_subtract_command(sl_cli_comman
 void sl_zigbee_af_idle_sleep_status_command(sl_cli_command_arg_t *arguments);
 void sl_zigbee_af_idle_sleep_stay_awake_command(sl_cli_command_arg_t *arguments);
 void sl_zigbee_af_idle_sleep_awake_when_not_joined_command(sl_cli_command_arg_t *arguments);
-void sl_zigbee_af_set_t_c_link_key_update_timer_command(sl_cli_command_arg_t *arguments);
+void sl_zigbee_af_set_tc_link_key_update_timer_command(sl_cli_command_arg_t *arguments);
+void sl_zigbee_af_set_tc_link_key_update_now_command(sl_cli_command_arg_t *arguments);
 void networkFormCommand(sl_cli_command_arg_t *arguments);
 void networkJoinCommand(sl_cli_command_arg_t *arguments);
 void networkPermitJoinCommand(sl_cli_command_arg_t *arguments);
@@ -243,7 +244,7 @@ void zdoAddClusterCommand(sl_cli_command_arg_t *arguments);
 void zdoClearClusterCommand(sl_cli_command_arg_t *arguments);
 void zdoAddClusterCommand(sl_cli_command_arg_t *arguments);
 void zdoClearClusterCommand(sl_cli_command_arg_t *arguments);
-void sl_zigbee_af_print_attribute_table(sl_cli_command_arg_t *arguments);
+void printAttributeTable(sl_cli_command_arg_t *arguments);
 void printTimeCommand(sl_cli_command_arg_t *arguments);
 void formNetwork(sl_cli_command_arg_t *arguments);
 void scanTouchLink(sl_cli_command_arg_t *arguments);
@@ -262,7 +263,7 @@ void setScanMask(sl_cli_command_arg_t *arguments);
 void statusCommand(sl_cli_command_arg_t *arguments);
 void joinable(sl_cli_command_arg_t *arguments);
 void unused(sl_cli_command_arg_t *arguments);
-void sl_zigbee_af_zll_reset_to_factory_new(sl_cli_command_arg_t *arguments);
+void resetToFactoryNew(sl_cli_command_arg_t *arguments);
 void noTouchlinkForNFN(sl_cli_command_arg_t *arguments);
 void noResetForNFN(sl_cli_command_arg_t *arguments);
 void disable(sl_cli_command_arg_t *arguments);
@@ -413,7 +414,7 @@ static const sl_cli_command_info_t cli_cmd_counters_simple_hyphen_print = \
                  {SL_CLI_ARG_END, });
 
 static const sl_cli_command_info_t cli_cmd_counters_clear = \
-  SL_CLI_COMMAND(sl_zigbee_af_counters_clear,
+  SL_CLI_COMMAND(sl_zigbee_af_counters_clear_command,
                  "Clears all counter values.",
                   "",
                  {SL_CLI_ARG_END, });
@@ -431,7 +432,7 @@ static const sl_cli_command_info_t cli_cmd_counters_set_hyphen_threshold = \
                  {SL_CLI_ARG_UINT8, SL_CLI_ARG_UINT16, SL_CLI_ARG_END, });
 
 static const sl_cli_command_info_t cli_cmd_counters_reset_hyphen_thresholds = \
-  SL_CLI_COMMAND(sl_zigbee_af_counters_reset_thresholds,
+  SL_CLI_COMMAND(sl_zigbee_af_counters_reset_thresholds_command,
                  "Resets all thresholds values to 0xFFFF.",
                   "",
                  {SL_CLI_ARG_END, });
@@ -490,7 +491,7 @@ static const sl_cli_command_info_t cli_cmd_end_hyphen_device_hyphen_support_forc
                   "The value indicating whether the device should short poll" SL_CLI_UNIT_SEPARATOR,
                  {SL_CLI_ARG_INT8, SL_CLI_ARG_END, });
 
-static const sl_cli_command_info_t cli_cmd_find_and_bind_initiator = \
+static const sl_cli_command_info_t cli_cmd_find_hyphen_and_hyphen_bind_initiator = \
   SL_CLI_COMMAND(sl_zigbee_af_find_and_bind_initiator_start_command,
                  "Makes this node start the initiator part of the finding and binding process.",
                   "The endpoint on which to begin the Finding and Binding initiator process" SL_CLI_UNIT_SEPARATOR,
@@ -605,10 +606,16 @@ static const sl_cli_command_info_t cli_cmd_idle_hyphen_sleep_awake_hyphen_when_h
                  {SL_CLI_ARG_UINT8, SL_CLI_ARG_END, });
 
 static const sl_cli_command_info_t cli_cmd_update_hyphen_tc_hyphen_link_hyphen_key_timer = \
-  SL_CLI_COMMAND(sl_zigbee_af_set_t_c_link_key_update_timer_command,
-                 "This sets the the amount of time between subsequent trust center link key updates in milliseconds.",
+  SL_CLI_COMMAND(sl_zigbee_af_set_tc_link_key_update_timer_command,
+                 "Specify the amount of time to wait after one TCLK update operation completes before beginning a new TCLK update operation.",
                   "The amount of time between subsequent trust center link key updates in milliseconds" SL_CLI_UNIT_SEPARATOR,
                  {SL_CLI_ARG_UINT32, SL_CLI_ARG_END, });
+
+static const sl_cli_command_info_t cli_cmd_update_hyphen_tc_hyphen_link_hyphen_key_now = \
+  SL_CLI_COMMAND(sl_zigbee_af_set_tc_link_key_update_now_command,
+                 "This initiates a TCLK update procedure.",
+                  "",
+                 {SL_CLI_ARG_END, });
 
 static const sl_cli_command_info_t cli_cmd_network_form = \
   SL_CLI_COMMAND(networkFormCommand,
@@ -1001,7 +1008,7 @@ static const sl_cli_command_info_t cli_cmd_in_hyphen_cl_hyphen_list_clear = \
                  {SL_CLI_ARG_END, });
 
 static const sl_cli_command_info_t cli_cmd_print_attr = \
-  SL_CLI_COMMAND(sl_zigbee_af_print_attribute_table,
+  SL_CLI_COMMAND(printAttributeTable,
                  "Prints attribute.",
                   "",
                  {SL_CLI_ARG_END, });
@@ -1115,7 +1122,7 @@ static const sl_cli_command_info_t cli_cmd_zll_hyphen_commissioning_unused = \
                  {SL_CLI_ARG_END, });
 
 static const sl_cli_command_info_t cli_cmd_zll_hyphen_commissioning_reset = \
-  SL_CLI_COMMAND(sl_zigbee_af_zll_reset_to_factory_new,
+  SL_CLI_COMMAND(resetToFactoryNew,
                  "Resets the local device to factory new.",
                   "",
                  {SL_CLI_ARG_END, });
@@ -1243,12 +1250,12 @@ static const sl_cli_command_entry_t end_hyphen_device_hyphen_support_group_table
 static const sl_cli_command_info_t cli_cmd_grp_end_hyphen_device_hyphen_support = \
   SL_CLI_COMMAND_GROUP(end_hyphen_device_hyphen_support_group_table, "end-device-support related commands.");
 
-static const sl_cli_command_entry_t find_and_bind_group_table[] = {
-  { "initiator", &cli_cmd_find_and_bind_initiator, false },
+static const sl_cli_command_entry_t find_hyphen_and_hyphen_bind_group_table[] = {
+  { "initiator", &cli_cmd_find_hyphen_and_hyphen_bind_initiator, false },
   { NULL, NULL, false },
 };
-static const sl_cli_command_info_t cli_cmd_grp_find_and_bind = \
-  SL_CLI_COMMAND_GROUP(find_and_bind_group_table, "Find and bind related commands.");
+static const sl_cli_command_info_t cli_cmd_grp_find_hyphen_and_hyphen_bind = \
+  SL_CLI_COMMAND_GROUP(find_hyphen_and_hyphen_bind_group_table, "Find and bind related commands.");
 
 static const sl_cli_command_entry_t identify_group_table[] = {
   { "print", &cli_cmd_identify_print, false },
@@ -1301,6 +1308,7 @@ static const sl_cli_command_info_t cli_cmd_grp_idle_hyphen_sleep = \
 
 static const sl_cli_command_entry_t update_hyphen_tc_hyphen_link_hyphen_key_group_table[] = {
   { "timer", &cli_cmd_update_hyphen_tc_hyphen_link_hyphen_key_timer, false },
+  { "now", &cli_cmd_update_hyphen_tc_hyphen_link_hyphen_key_now, false },
   { NULL, NULL, false },
 };
 static const sl_cli_command_info_t cli_cmd_grp_update_hyphen_tc_hyphen_link_hyphen_key = \
@@ -1347,7 +1355,7 @@ static const sl_cli_command_info_t cli_cmd_grp_zll_hyphen_commissioning = \
 static const sl_cli_command_entry_t plugin_group_table[] = {
   { "counters", &cli_cmd_grp_counters, false },
   { "end-device-support", &cli_cmd_grp_end_hyphen_device_hyphen_support, false },
-  { "find_and_bind", &cli_cmd_grp_find_and_bind, false },
+  { "find-and-bind", &cli_cmd_grp_find_hyphen_and_hyphen_bind, false },
   { "identify", &cli_cmd_grp_identify, false },
   { "interpan", &cli_cmd_grp_interpan, false },
   { "network-steering", &cli_cmd_grp_network_hyphen_steering, false },

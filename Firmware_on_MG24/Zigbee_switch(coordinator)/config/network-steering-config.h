@@ -53,6 +53,11 @@
 // <i> When enabled, network steering will attempt to join each network using the install code derived key, centralized key, and distributed key at the same time, rather than trying each key individually. Users that wish to prioritize joining using install code keys should not check this option.
 #define SL_ZIGBEE_AF_PLUGIN_NETWORK_STEERING_TRY_ALL_KEYS   0
 
+// <q SL_ZIGBEE_AF_PLUGIN_NETWORK_STEERING_ENABLE_AUTOSTART> Enable steering auto-start
+// <i> Default: TRUE
+// <i> Provides a configuration for applications to control the behavior of sl_zigbee_af_network_steering_autostart.  That function will call sl_zigbee_af_network_steering_start when this configured enabled and do nothing if it is disabled.  Can be used for testing, which may need more predictability over when network steering is started to get more consistent results.
+#define SL_ZIGBEE_AF_PLUGIN_NETWORK_STEERING_ENABLE_AUTOSTART   0
+
 // </h>
 
 // <<< end of configuration section >>>

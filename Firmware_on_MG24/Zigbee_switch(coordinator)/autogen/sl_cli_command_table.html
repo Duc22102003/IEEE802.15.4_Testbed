@@ -1039,7 +1039,7 @@ Example syntax (.slcc or .slcp) for populating this file:
     <div class="command-header-bar"></div>
     <div class="command-header">
       <span class="command-name"> plugin counters clear</span>
-      <span class="command-handler">sl_zigbee_af_counters_clear</span>
+      <span class="command-handler">sl_zigbee_af_counters_clear_command</span>
     </div>
     <div class="command-info">
       <div class="help">Clears all counter values.</div>
@@ -1098,7 +1098,7 @@ Example syntax (.slcc or .slcp) for populating this file:
     <div class="command-header-bar"></div>
     <div class="command-header">
       <span class="command-name"> plugin counters reset-thresholds</span>
-      <span class="command-handler">sl_zigbee_af_counters_reset_thresholds</span>
+      <span class="command-handler">sl_zigbee_af_counters_reset_thresholds_command</span>
     </div>
     <div class="command-info">
       <div class="help">Resets all thresholds values to 0xFFFF.</div>
@@ -1202,7 +1202,7 @@ Example syntax (.slcc or .slcp) for populating this file:
 </div>
 <div class="group">
   <div class="group-header">
-    <h3 class="group-name"> find_and_bind</h3>
+    <h3 class="group-name"> find-and-bind</h3>
   </div>
   <div class="group-info">
     <span class="help">Find and bind related commands.</span>
@@ -1214,7 +1214,7 @@ Example syntax (.slcc or .slcp) for populating this file:
   <div class="command">
     <div class="command-header-bar"></div>
     <div class="command-header">
-      <span class="command-name"> find_and_bind initiator</span>
+      <span class="command-name"> find-and-bind initiator</span>
         <span class="command-argument">u8</span>
       <span class="command-handler">sl_zigbee_af_find_and_bind_initiator_start_command</span>
     </div>
@@ -1662,10 +1662,10 @@ Example syntax (.slcc or .slcp) for populating this file:
     <div class="command-header">
       <span class="command-name"> update-tc-link-key timer</span>
         <span class="command-argument">u32</span>
-      <span class="command-handler">sl_zigbee_af_set_t_c_link_key_update_timer_command</span>
+      <span class="command-handler">sl_zigbee_af_set_tc_link_key_update_timer_command</span>
     </div>
     <div class="command-info">
-      <div class="help">This sets the the amount of time between subsequent trust center link key updates in milliseconds.</div>
+      <div class="help">Specify the amount of time to wait after one TCLK update operation completes before beginning a new TCLK update operation.</div>
       
       
       <div class="argument-list">
@@ -1676,6 +1676,21 @@ Example syntax (.slcc or .slcp) for populating this file:
         </li>
       </ul>
       </div>
+      
+    </div>
+  </div>
+    
+    
+  
+  <div class="command">
+    <div class="command-header-bar"></div>
+    <div class="command-header">
+      <span class="command-name"> update-tc-link-key now</span>
+      <span class="command-handler">sl_zigbee_af_set_tc_link_key_update_now_command</span>
+    </div>
+    <div class="command-info">
+      <div class="help">This initiates a TCLK update procedure.</div>
+      
       
     </div>
   </div>
@@ -2027,7 +2042,7 @@ Example syntax (.slcc or .slcp) for populating this file:
     <div class="command-header-bar"></div>
     <div class="command-header">
       <span class="command-name"> zll-commissioning reset</span>
-      <span class="command-handler">sl_zigbee_af_zll_reset_to_factory_new</span>
+      <span class="command-handler">resetToFactoryNew</span>
     </div>
     <div class="command-info">
       <div class="help">Resets the local device to factory new.</div>
@@ -4012,7 +4027,7 @@ Example syntax (.slcc or .slcp) for populating this file:
     <div class="command-header-bar"></div>
     <div class="command-header">
       <span class="command-name"> print attr</span>
-      <span class="command-handler">sl_zigbee_af_print_attribute_table</span>
+      <span class="command-handler">printAttributeTable</span>
     </div>
     <div class="command-info">
       <div class="help">Prints attribute.</div>

@@ -1,6 +1,6 @@
 {
   "fileFormat": 2,
-  "featureLevel": 106,
+  "featureLevel": 107,
   "creator": "zap",
   "keyValuePairs": [
     {
@@ -390,6 +390,14 @@
             {
               "name": "IdentifyQuery",
               "code": 1,
+              "mfgCode": null,
+              "source": "client",
+              "isIncoming": 1,
+              "isEnabled": 1
+            },
+            {
+              "name": "TriggerEffect",
+              "code": 64,
               "mfgCode": null,
               "source": "client",
               "isIncoming": 1,
@@ -854,11 +862,27 @@
           "enabled": 1,
           "commands": [
             {
+              "name": "ImageNotify",
+              "code": 0,
+              "mfgCode": null,
+              "source": "server",
+              "isIncoming": 1,
+              "isEnabled": 1
+            },
+            {
               "name": "QueryNextImageRequest",
               "code": 1,
               "mfgCode": null,
               "source": "client",
               "isIncoming": 0,
+              "isEnabled": 1
+            },
+            {
+              "name": "QueryNextImageResponse",
+              "code": 2,
+              "mfgCode": null,
+              "source": "server",
+              "isIncoming": 1,
               "isEnabled": 1
             },
             {
@@ -870,11 +894,27 @@
               "isEnabled": 1
             },
             {
+              "name": "ImageBlockResponse",
+              "code": 5,
+              "mfgCode": null,
+              "source": "server",
+              "isIncoming": 1,
+              "isEnabled": 1
+            },
+            {
               "name": "UpgradeEndRequest",
               "code": 6,
               "mfgCode": null,
               "source": "client",
               "isIncoming": 0,
+              "isEnabled": 1
+            },
+            {
+              "name": "UpgradeEndResponse",
+              "code": 7,
+              "mfgCode": null,
+              "source": "server",
+              "isIncoming": 1,
               "isEnabled": 1
             }
           ],
@@ -1251,6 +1291,14 @@
               "source": "client",
               "isIncoming": 1,
               "isEnabled": 1
+            },
+            {
+              "name": "TriggerEffect",
+              "code": 64,
+              "mfgCode": null,
+              "source": "client",
+              "isIncoming": 1,
+              "isEnabled": 1
             }
           ],
           "attributes": [
@@ -1617,11 +1665,27 @@
           "enabled": 1,
           "commands": [
             {
+              "name": "ImageNotify",
+              "code": 0,
+              "mfgCode": null,
+              "source": "server",
+              "isIncoming": 1,
+              "isEnabled": 1
+            },
+            {
               "name": "QueryNextImageRequest",
               "code": 1,
               "mfgCode": null,
               "source": "client",
               "isIncoming": 0,
+              "isEnabled": 1
+            },
+            {
+              "name": "QueryNextImageResponse",
+              "code": 2,
+              "mfgCode": null,
+              "source": "server",
+              "isIncoming": 1,
               "isEnabled": 1
             },
             {
@@ -1633,11 +1697,27 @@
               "isEnabled": 1
             },
             {
+              "name": "ImageBlockResponse",
+              "code": 5,
+              "mfgCode": null,
+              "source": "server",
+              "isIncoming": 1,
+              "isEnabled": 1
+            },
+            {
               "name": "UpgradeEndRequest",
               "code": 6,
               "mfgCode": null,
               "source": "client",
               "isIncoming": 0,
+              "isEnabled": 1
+            },
+            {
+              "name": "UpgradeEndResponse",
+              "code": 7,
+              "mfgCode": null,
+              "source": "server",
+              "isIncoming": 1,
               "isEnabled": 1
             }
           ],

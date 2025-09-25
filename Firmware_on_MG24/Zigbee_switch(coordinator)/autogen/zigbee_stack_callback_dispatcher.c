@@ -110,29 +110,32 @@ void sli_zigbee_af_mark_buffers(void)
 
 
 // Packet Handoff Incoming
-void sli_zigbee_af_packet_handoff_incoming(
+void sli_zigbee_dispatch_packet_handoff_incoming(
       sl_zigbee_zigbee_packet_type_t packetType,
       sli_buffer_manager_buffer_t packetBuffer,
       uint8_t index,
       // Return: 
-      void *data)
+      void *data,
+      uint8_t data_len)
 {
 (void)packetType;
 (void)packetBuffer;
 (void)index;
 (void)data;
+(void)data_len;
 
 }
 
 
 
 // Packet Handoff Outgoing
-void sli_zigbee_af_packet_handoff_outgoing(
+void sli_zigbee_dispatch_packet_handoff_outgoing(
       sl_zigbee_zigbee_packet_type_t packetType,
       sli_buffer_manager_buffer_t packetBuffer,
       uint8_t index,
       // Return: 
-      void *data)
+      void *data,
+      uint8_t data_len)
 {
 (void)packetType;
 (void)packetBuffer;
@@ -551,6 +554,12 @@ sli_zigbee_af_counter_rollover_callback(type);
 }
 
 
+// mux_invalid_rx
+void sli_zigbee_af_mux_invalid_rx(uint8_t new_rx_channel, uint8_t old_rx_channel)
+{
+}
+
+
 
 // Raw Transmit Complete
 void sli_zigbee_af_raw_transmit_complete(
@@ -858,52 +867,10 @@ void sli_zigbee_af_calculate_smacs_283k1_handler(
 
 // Gpep Incoming Message
 void sli_zigbee_af_gpep_incoming_message(
-      // The status of the GPDF receive.
-      sl_zigbee_gp_status_t status,
-      // The gpdLink value of the received GPDF.
-      uint8_t gpdLink,
-      // The GPDF sequence number.
-      uint8_t sequenceNumber,
-      // The address of the source GPD.
-      sl_zigbee_gp_address_t *addr,
-      // The security level of the received GPDF.
-      sl_zigbee_gp_security_level_t gpdfSecurityLevel,
-      // The securityKeyType used to decrypt/authenticate the incoming GPDF.
-      sl_zigbee_gp_key_type_t gpdfSecurityKeyType,
-      // Whether the incoming GPDF had the auto-commissioning bit set.
-      bool autoCommissioning,
-      // Bidirectional information represented in bitfields, where bit0 holds
-      // the rxAfterTx of incoming gpdf and bit1 holds if tx queue is available
-      // for outgoing gpdf.
-      uint8_t bidirectionalInfo,
-      // The security frame counter of the incoming GDPF.
-      uint32_t gpdSecurityFrameCounter,
-      // The gpdCommandId of the incoming GPDF.
-      uint8_t gpdCommandId,
-      // The received MIC of the GPDF.
-      uint32_t mic,
-      // The proxy table index of the corresponding proxy table entry to the
-      // incoming GPDF.
-      uint8_t proxyTableIndex,
-      // The length of the GPD command payload.
-      uint8_t gpdCommandPayloadLength,
-      // The GPD command payload.
-      uint8_t *gpdCommandPayload)
+      // GP parameters list represented as a macro for GP endpoint incoming message handler and callbacks prototypes.
+      sl_zigbee_gp_params_t *params)
 {
-(void)status;
-(void)gpdLink;
-(void)sequenceNumber;
-(void)addr;
-(void)gpdfSecurityLevel;
-(void)gpdfSecurityKeyType;
-(void)autoCommissioning;
-(void)bidirectionalInfo;
-(void)gpdSecurityFrameCounter;
-(void)gpdCommandId;
-(void)mic;
-(void)proxyTableIndex;
-(void)gpdCommandPayloadLength;
-(void)gpdCommandPayload;
+(void)params;
 
 }
 
@@ -916,14 +883,6 @@ void sli_zigbee_af_rtos_idle(
       uint32_t *idleTimeMs)
 {
 (void)idleTimeMs;
-
-}
-
-
-
-// Rtos Stack Wakeup Isr
-void sli_zigbee_common_wakeup_isr(void)
-{
 
 }
 
